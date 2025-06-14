@@ -129,9 +129,7 @@ Handles missing values and categorical variables automatically.
 If you have questions, feedback, or want to collaborate, open an issue or reach out.  
 **Good luck to all hackathon teams!**
 
----
+contact details :- aerraj50@gmail.com
+linkedin :- https://www.linkedin.com/in/aman-jaiswal-05b962212/
 
-**Tips:**
-- Replace `<your-repo-url>`, `<your-repo-folder>`, and the demo link with your actual info.
-- Add your real screenshot to `image.png`.
-- Personalize the "Team" section.
+
