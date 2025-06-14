@@ -17,20 +17,10 @@ class ChurnPredictor:
         self.scaler = StandardScaler()
         self.label_encoders = {}
         self.feature_names = None
-        self._cached_preprocess = lru_cache(maxsize=32)(self._preprocess_impl)
 
     def preprocess(self, df, training=True):
         """
         Preprocesses the input DataFrame for model training or prediction.
-        Uses caching for faster repeated operations.
-        """
-        # Create a cache key based on the DataFrame's hash
-        cache_key = hash(df.to_string())
-        return self._cached_preprocess(df, training, cache_key)
-
-    def _preprocess_impl(self, df, training, cache_key):
-        """
-        Implementation of preprocessing with caching.
         """
         df = df.copy()
         if 'customerID' in df.columns:
@@ -63,12 +53,21 @@ class ChurnPredictor:
         
         return df
 
+    @lru_cache(maxsize=32)
+    def _get_cached_preprocess(self, data_hash, training):
+        """
+        Cached preprocessing implementation.
+        """
+        return self.preprocess(pd.read_json(data_hash), training)
+
     def train(self, X, y):
         """
         Trains the XGBoost model and prints cross-validated AUC-ROC.
         Optimized for faster training in Streamlit.
         """
-        X_proc = self.preprocess(X, training=True)
+        # Convert DataFrame to JSON string for caching
+        data_hash = X.to_json()
+        X_proc = self._get_cached_preprocess(data_hash, True)
         self.feature_names = X_proc.columns
         
         # Reduced number of CV folds for faster training
@@ -103,7 +102,9 @@ class ChurnPredictor:
         """
         if self.model is None:
             raise ValueError("Model not trained yet!")
-        X_proc = self.preprocess(X, training=False)
+        # Convert DataFrame to JSON string for caching
+        data_hash = X.to_json()
+        X_proc = self._get_cached_preprocess(data_hash, False)
         return self.model.predict_proba(X_proc)[:, 1]
 
     def get_feature_importance(self):
