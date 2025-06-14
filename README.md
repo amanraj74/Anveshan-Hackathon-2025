@@ -42,7 +42,7 @@ A beautiful, robust, and explainable dashboard for predicting customer churn in 
 [Watch the demo](https://your-demo-link.com)
 
 ## 👥 Team
-- Your Name(s)
+- SARTHAK RAHA
 - [GitHub](https://github.com/your-repo)
 
 ## 📄 License
