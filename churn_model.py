@@ -6,6 +6,7 @@ from sklearn.metrics import roc_auc_score
 import xgboost as xgb
 import shap
 import joblib
+from functools import lru_cache
 
 class ChurnPredictor:
     """
@@ -16,14 +17,20 @@ class ChurnPredictor:
         self.scaler = StandardScaler()
         self.label_encoders = {}
         self.feature_names = None
+        self._cached_preprocess = lru_cache(maxsize=32)(self._preprocess_impl)
 
     def preprocess(self, df, training=True):
         """
         Preprocesses the input DataFrame for model training or prediction.
-        - Drops customerID
-        - Converts TotalCharges to numeric
-        - Encodes categoricals
-        - Scales numerics
+        Uses caching for faster repeated operations.
+        """
+        # Create a cache key based on the DataFrame's hash
+        cache_key = hash(df.to_string())
+        return self._cached_preprocess(df, training, cache_key)
+
+    def _preprocess_impl(self, df, training, cache_key):
+        """
+        Implementation of preprocessing with caching.
         """
         df = df.copy()
         if 'customerID' in df.columns:
@@ -31,9 +38,11 @@ class ChurnPredictor:
         if 'TotalCharges' in df.columns:
             df['TotalCharges'] = pd.to_numeric(df['TotalCharges'], errors='coerce')
             df['TotalCharges'] = df['TotalCharges'].fillna(df['TotalCharges'].mean())
+        
         # Fill missing numerics
         numeric_cols = df.select_dtypes(include=[np.number]).columns
         df[numeric_cols] = df[numeric_cols].fillna(df[numeric_cols].mean() if training else 0)
+        
         # Encode categoricals (except target)
         categorical_cols = df.select_dtypes(include=['object']).columns
         for col in categorical_cols:
@@ -44,34 +53,45 @@ class ChurnPredictor:
                 df[col] = self.label_encoders[col].fit_transform(df[col])
             else:
                 df[col] = self.label_encoders[col].transform(df[col])
+        
         # Scale numerics
         numerical_cols = df.select_dtypes(include=['int64', 'float64']).columns
         if training:
             df[numerical_cols] = self.scaler.fit_transform(df[numerical_cols])
         else:
             df[numerical_cols] = self.scaler.transform(df[numerical_cols])
+        
         return df
 
     def train(self, X, y):
         """
         Trains the XGBoost model and prints cross-validated AUC-ROC.
+        Optimized for faster training in Streamlit.
         """
         X_proc = self.preprocess(X, training=True)
         self.feature_names = X_proc.columns
-        # Cross-validation for robust AUC-ROC
-        skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+        
+        # Reduced number of CV folds for faster training
+        skf = StratifiedKFold(n_splits=3, shuffle=True, random_state=42)
+        
+        # Optimized XGBoost parameters for faster training
         model = xgb.XGBClassifier(
             objective='binary:logistic',
-            n_estimators=200,
-            learning_rate=0.07,
-            max_depth=5,
+            n_estimators=100,  # Reduced from 200
+            learning_rate=0.1,  # Increased from 0.07
+            max_depth=4,  # Reduced from 5
             subsample=0.8,
             colsample_bytree=0.8,
             random_state=42,
-            eval_metric='auc'
+            eval_metric='auc',
+            tree_method='hist',  # Faster training method
+            n_jobs=-1  # Use all available cores
         )
-        aucs = cross_val_score(model, X_proc, y, cv=skf, scoring='roc_auc')
+        
+        # Quick cross-validation
+        aucs = cross_val_score(model, X_proc, y, cv=skf, scoring='roc_auc', n_jobs=-1)
         print(f"Mean CV AUC-ROC: {aucs.mean():.4f} ± {aucs.std():.4f}")
+        
         # Fit on all data
         model.fit(X_proc, y)
         self.model = model

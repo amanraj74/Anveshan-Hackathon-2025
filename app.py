@@ -37,21 +37,47 @@ with tab1:
     st.subheader("Upload Training Data")
     train_file = st.file_uploader("CSV with 'churned' column", type="csv", key="train")
     if train_file is not None:
-        train_data = pd.read_csv(train_file)
-        if 'churned' not in train_data.columns:
-            st.error("Training file must contain a 'churned' column!")
-        else:
-            st.session_state.customer_ids = train_data['customerID'] if 'customerID' in train_data.columns else train_data.index
-            st.session_state.data = train_data
-            with st.spinner("Training model..."):
-                model = ChurnPredictor()
-                X = train_data.drop('churned', axis=1)
-                y = train_data['churned']
-                auc = model.train(X, y)
-                st.success(f"Model trained! Mean CV AUC-ROC: {auc:.4f}")
-                st.session_state.model = model
-                model.save("churn_model.joblib")
-                st.info("Model saved.")
+        with st.spinner("Loading data..."):
+            train_data = pd.read_csv(train_file)
+            if 'churned' not in train_data.columns:
+                st.error("Training file must contain a 'churned' column!")
+            else:
+                st.session_state.customer_ids = train_data['customerID'] if 'customerID' in train_data.columns else train_data.index
+                st.session_state.data = train_data
+                
+                # Show data preview
+                st.write("Data Preview:")
+                st.dataframe(train_data.head())
+                
+                # Training progress
+                progress_bar = st.progress(0)
+                status_text = st.empty()
+                
+                def update_progress(progress, status):
+                    progress_bar.progress(progress)
+                    status_text.text(status)
+                
+                with st.spinner("Training model..."):
+                    model = ChurnPredictor()
+                    X = train_data.drop('churned', axis=1)
+                    y = train_data['churned']
+                    
+                    # Update progress
+                    update_progress(0.3, "Preprocessing data...")
+                    
+                    # Train model
+                    update_progress(0.5, "Training model...")
+                    auc = model.train(X, y)
+                    
+                    # Save model
+                    update_progress(0.8, "Saving model...")
+                    model.save("churn_model.joblib")
+                    
+                    # Complete
+                    update_progress(1.0, "Training complete!")
+                    st.success(f"Model trained! Mean CV AUC-ROC: {auc:.4f}")
+                    st.session_state.model = model
+                    st.info("Model saved.")
 
 # Make Predictions Tab
 with tab2:
