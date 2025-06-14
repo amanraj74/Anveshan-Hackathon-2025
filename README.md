@@ -36,7 +36,7 @@ A beautiful, robust, and explainable dashboard for predicting customer churn in 
 - Feature importance and SHAP explainability
 
 ## 🖼️ Screenshots
-![Dashboard Screenshot](screenshot.png)
+![Dashboard Screenshot](image.png)
 
 ## 🎥 Video Demo
 [Watch the demo](https://your-demo-link.com)
