@@ -1,71 +1,137 @@
 # Churn Prediction Dashboard
 
-A beautiful, robust, and explainable dashboard for predicting customer churn in fintech.
+> **Predict. Understand. Take Action.**  
+> A beautiful, robust, and explainable dashboard to help fintechs reduce customer churn—built for real business impact and hackathon excellence.
 
-## 🚀 Overview
-- Predicts which customers are likely to churn using advanced machine learning (XGBoost).
-- Interactive dashboard for uploading data, visualizing churn risk, and downloading predictions.
-- Model explainability with feature importance and SHAP values.
+---
 
-## 🛠️ Setup
-1. Clone this repo
-2. Install dependencies:
+## 🚀 What is This?
+
+Churn hurts. Our dashboard helps you fight back—by showing you not just **who** is likely to leave, but **why**.  
+Upload your data, train a powerful model, and get instant, actionable insights—all in a few clicks.
+
+---
+
+## ✨ Key Features
+
+- **Ensemble Machine Learning:** Combines XGBoost, LightGBM, and RandomForest for top-tier accuracy.
+- **Smart Data Handling:** Cleans, encodes, and scales your data automatically—even if it's messy.
+- **Explainable AI:** See which features drive churn, with interactive SHAP and feature importance plots.
+- **Beautiful UI:** Modern Streamlit dashboard—easy for anyone to use.
+- **Instant Results:** Upload, train, predict, and download—all in minutes.
+- **Visual Insights:** Churn probability histograms, pie charts, risk tables, and more.
+- **One-Click Reset:** Start over anytime.
+
+---
+
+## 🛠️ Getting Started
+
+1. **Clone the repo**
+   ```bash
+   git clone <your-repo-url>
+   cd <your-repo-folder>
+   ```
+2. **Install dependencies**
    ```bash
    pip install -r requirements.txt
    ```
-3. Run the dashboard:
+3. **Run the dashboard**
    ```bash
    streamlit run app.py
    ```
 
-## 📊 Dashboard Features
-- **Upload & Parse:** Accepts CSVs with behavioral/transactional features. Handles missing/noisy data.
-- **AUC-ROC Optimized:** Trains a binary classifier for 30-day churn.
-- **Visuals:**
-  - Churn probability histogram
-  - Churn vs Retain pie chart
-  - Top-10 risk table
-  - Feature importance bar chart
-  - SHAP explainability for top customer
-- **Download:** Export predictions as CSV.
-- **Reset:** Start over with one click.
+---
 
-## 🧠 Model
-- XGBoost classifier, cross-validated for best AUC-ROC
-- Robust preprocessing (missing values, encoding, scaling)
-- Feature importance and SHAP explainability
+## 📊 How It Works
+
+1. **Train Your Model**
+   - Go to the **Train Model** tab.
+   - Upload your labeled CSV (must include a `churned` column).
+   - See your AUC-ROC score and feature insights.
+
+2. **Make Predictions**
+   - Go to **Make Predictions**.
+   - Upload your test CSV (same features as training, no `churned` needed).
+   - Download your predictions as CSV.
+
+3. **Explore & Explain**
+   - Visualize churn risk, feature importance, and SHAP explanations.
+   - Identify your top 10 high-risk customers.
+
+---
+
+## 🧠 Under the Hood
+
+- **Model:** Stacking ensemble (XGBoost, LightGBM, RandomForest)
+- **Feature Engineering:**  
+  - Average charges per month  
+  - Tenure groups  
+  - Senior+Fiber interaction
+- **Imbalance Handling:** SMOTE oversampling
+- **Validation:** 5-fold stratified cross-validation
+- **Explainability:** SHAP values, feature importance
+
+---
 
 ## 🖼️ Screenshots
+
 ![Dashboard Screenshot](image.png)
 
-## 🎥 Video Demo
+---
+
+## 🎥 Demo
+
 [Watch the demo](https://your-demo-link.com)
 
+---
+
 ## 👥 Team
-- SARTHAK RAHA
-- [GitHub](https://github.com/your-repo)
+
+Made with ❤️ for the DS-2 Hackathon  
+**Team:** Sarthak Raha  
+[GitHub](https://github.com/your-repo)
+
+---
 
 ## 📄 License
+
 MIT
 
-## Project Structure
+---
 
-- `model.py`: Core ML model implementation
+## 📂 Project Structure
+
+- `ensemble_model.py`: Advanced ensemble ML model
+- `churn_model.py`: (Legacy) XGBoost model
 - `app.py`: Streamlit dashboard application
 - `utils.py`: Helper functions
 - `requirements.txt`: Project dependencies
 
-## Model Performance
+---
 
-The model is optimized for AUC-ROC score and includes:
-- Feature importance analysis
-- SHAP value explanations
-- Cross-validation results
+## 📈 Model Performance
 
-## Data
+- Optimized for AUC-ROC score
+- Feature importance and SHAP explainability
+- Robust cross-validation results
 
-The project uses the telco dataset with behavioral and transactional features. The data is preprocessed to handle missing values and categorical variables.
+---
 
-## License
+## 📚 Data
 
-MIT License
+Uses the telco dataset with behavioral and transactional features.  
+Handles missing values and categorical variables automatically.
+
+---
+
+## 🙏 Thanks for Visiting!
+
+If you have questions, feedback, or want to collaborate, open an issue or reach out.  
+**Good luck to all hackathon teams!**
+
+---
+
+**Tips:**
+- Replace `<your-repo-url>`, `<your-repo-folder>`, and the demo link with your actual info.
+- Add your real screenshot to `image.png`.
+- Personalize the "Team" section.
