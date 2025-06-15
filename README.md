@@ -84,9 +84,6 @@ Upload your data, train a powerful model, and get instant, actionable insightsâ€
 [Watch the demo](https://your-demo-link.com)
 
 ---
-Data
-Training Data: telco_train.csv
-Test Data: telco_test.csv
 
 ## ðŸ‘¥ Team
 
