@@ -89,6 +89,7 @@ Upload your data, train a powerful model, and get instant, actionable insights�
 
 Made with ❤️ for the DS-2 Hackathon  
 TEAM NAME :- Data Delvers 
+
 Team Members :- AMAN JAISWAL(iitrpr_ai_25010434), SARTHAK RAHA(iitrpr_ai_25010348)
 [GitHub](https://github.com/your-repo)
 
