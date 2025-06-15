@@ -102,12 +102,10 @@ class ChurnPredictor:
         print(f"Best params: {search.best_params_}")
         print(f"Best CV AUC-ROC: {search.best_score_:.4f}")
 
-        # Fit best model on all data with early stopping
+        # Fit best model on all data
         best_model = search.best_estimator_
         best_model.fit(
             X_res, y_res,
-            eval_set=[(X_res, y_res)],
-            early_stopping_rounds=20,
             verbose=False
         )
         self.model = best_model
