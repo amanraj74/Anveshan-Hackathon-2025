@@ -131,7 +131,9 @@ Handles missing values and categorical variables automatically.
 If you have questions, feedback, or want to collaborate, open an issue or reach out.  
 **Good luck to all hackathon teams!**
 
-contact details :- aerraj50@gmail.com
+Contact details :- aerraj50@gmail.com
+Phone No :- 9431771657
 linkedin :- https://www.linkedin.com/in/aman-jaiswal-05b962212/
+Team 2 :- https://www.linkedin.com/in/sarthak-raha-022873287
 
 
