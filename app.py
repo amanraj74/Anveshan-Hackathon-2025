@@ -39,9 +39,12 @@ with tab1:
     if train_file is not None:
         with st.spinner("Loading data..."):
             train_data = pd.read_csv(train_file)
-            if 'churned' not in train_data.columns:
-                st.error("Training file must contain a 'churned' column!")
+            if 'churned' not in train_data.columns and 'churn' not in train_data.columns:
+                st.error("Training file must contain a 'churned' or 'churn' column!")
             else:
+                # Standardize the column name
+                if 'churn' in train_data.columns:
+                    train_data.rename(columns={'churn': 'churned'}, inplace=True)
                 st.session_state.customer_ids = train_data['customerID'] if 'customerID' in train_data.columns else train_data.index
                 st.session_state.data = train_data
                 
