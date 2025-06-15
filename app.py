@@ -192,4 +192,4 @@ else:
     st.markdown("---")
     st.markdown("**Tips:**\n- Use the 'Train Model' tab to train on labeled data.\n- Use the 'Make Predictions' tab for new/unlabeled data.\n- Download your predictions for submission.\n- See feature importance for explainability.")
     st.markdown("---")
-    st.caption("Made with ❤️ for DS-2 Hackathon | [GitHub](https://github.com/amanraj74/masai-hackathon.git)") 
+    st.caption("Made with ❤️ for DS-2 Hackathon | [GitHub](https://github.com/amanraj74/Anveshan-Hackathon-2025)") 
