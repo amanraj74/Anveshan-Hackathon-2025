@@ -81,7 +81,7 @@ Upload your data, train a powerful model, and get instant, actionable insightsâ€
 
 ## ðŸŽ¥ Demo
 
-[Watch the demo](https://your-demo-link.com)
+[Watch the demo](https://drive.google.com/file/d/1BEOsqpJd9r8hZDVHw2pAlA1BqncUoVqq/view?usp=sharing)
 
 ---
 
